@@ -69,7 +69,8 @@ namespace cAlgo
             for (int i = MyBars.ClosePrices.Count - 1; i >= 0; i--)
             {
 
-                if (MyTime == MyBars.OpenTimes[i]) return i;
+                if (MyTime == MyBars.OpenTimes[i])
+                    return i;
 
             }
 
@@ -234,6 +235,13 @@ namespace cAlgo
 
         }
 
+        public enum Mode {
+
+            Close,
+            HighLow
+
+        }
+
         #endregion
 
         #region Identity
@@ -246,7 +254,7 @@ namespace cAlgo
         /// <summary>
         /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
         /// </summary>
-        public const string VERSION = "1.0.1";
+        public const string VERSION = "1.0.2";
 
         #endregion
 
@@ -258,8 +266,11 @@ namespace cAlgo
         [Parameter(NAME + " " + VERSION, Group = "Identity", DefaultValue = "https://ctrader.guru/product/amazing-price-action/")]
         public string ProductInfo { get; set; }
 
-        [Parameter("Period", DefaultValue = 20, MinValue = 1)]
+        [Parameter("Period", Group = "Params", DefaultValue = 20, MinValue = 1)]
         public int Period { get; set; }
+
+        [Parameter("Mode", Group = "Params", DefaultValue = Mode.Close)]
+        public Mode Moden { get; set; }
 
         [Output("APA", LineColor = "DodgerBlue")]
         public IndicatorDataSeries Result { get; set; }
@@ -295,16 +306,19 @@ namespace cAlgo
             if (index > Period)
             {
 
-                if (Bars.OpenPrices[index] > Result[index - 1] && Bars.LowPrices.Minimum(Period) > Result[index - 1])
+                double upper = (Moden == Mode.Close) ? Bars.ClosePrices.Maximum(Period) : Bars.HighPrices.Maximum(Period);
+                double lower = (Moden == Mode.Close) ? Bars.ClosePrices.Minimum(Period) : Bars.LowPrices.Minimum(Period);
+
+                if (Bars.OpenPrices[index] > Result[index - 1] && lower > Result[index - 1])
                 {
 
-                    Result[index] = Bars.LowPrices.Minimum(Period);
+                    Result[index] = lower;
 
                 }
-                else if (Bars.OpenPrices[index] < Result[index - 1] && Bars.HighPrices.Maximum(Period) < Result[index - 1])
+                else if (Bars.OpenPrices[index] < Result[index - 1] && upper < Result[index - 1])
                 {
 
-                    Result[index] = Bars.HighPrices.Maximum(Period);
+                    Result[index] = upper;
 
                 }
                 else
