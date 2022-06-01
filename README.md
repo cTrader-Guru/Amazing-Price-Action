@@ -1,4 +1,4 @@
 # Amazing Price Action
-Interpreta la price action nel migliore dei modi
 
-[Pagina ufficiale](https://ctrader.guru/product/amazing-price-action/)
+
+[Find more indicators, cbots and tools](https://ctrader-guru.github.io)
