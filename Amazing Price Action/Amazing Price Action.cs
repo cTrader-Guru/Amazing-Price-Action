@@ -123,6 +123,9 @@ namespace cAlgo
         [Output("APA Down", LineColor = "Red", PlotType = PlotType.DiscontinuousLine, Thickness = 1)]
         public IndicatorDataSeries ResultDw { get; set; }
 
+        [Output("APA Signal", LineColor = "Green")]
+        public IndicatorDataSeries ResultSignal { get; set; }
+
         int LastDirection = 0;
 
         #endregion
@@ -183,6 +186,7 @@ namespace cAlgo
 
                     if (EnableSignal && LastDirection != 1 ) {
 
+                        ResultSignal[index] = Bars.OpenPrices[index];
                         ChartIcon IconUp = Chart.DrawIcon("Up" + index, ChartIconType.Circle, index, Bars.OpenPrices[index], ColorUp);
                         IconUp.IsInteractive = false;
                         IconUp.IsLocked = true;
@@ -204,6 +208,7 @@ namespace cAlgo
                     if (EnableSignal && LastDirection != -1)
                     {
 
+                        ResultSignal[index] = Bars.OpenPrices[index];
                         ChartIcon IconDw = Chart.DrawIcon("Dw" + index, ChartIconType.Circle, index, Bars.OpenPrices[index], ColorDw);
                         IconDw.IsInteractive = false;
                         IconDw.IsLocked = true;
