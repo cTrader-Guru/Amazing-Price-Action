@@ -80,7 +80,7 @@ namespace cAlgo
 
         public const string NAME = "Amazing Price Action";
 
-        public const string VERSION = "1.0.4";
+        public const string VERSION = "1.0.5";
 
         #endregion
 
@@ -95,8 +95,8 @@ namespace cAlgo
         [Parameter("Mode", Group = "Params", DefaultValue = Mode.Close)]
         public Mode Moden { get; set; }
 
-        [Parameter("Show", Group = "Signal", DefaultValue = true)]
-        public bool ShowSignal { get; set; }
+        [Parameter("Enable?", Group = "Signal", DefaultValue = true)]
+        public bool EnableSignal { get; set; }
 
         [Parameter("Color Up", Group = "Signal", DefaultValue = "DodgerBlue")]
         public Color ColorUp { get; set; }
@@ -181,7 +181,7 @@ namespace cAlgo
                     ResultUp[index] = lower;
                     ResultUp[index-1] = Result[index-1];
 
-                    if (ShowSignal && LastDirection != 1 ) {
+                    if (EnableSignal && LastDirection != 1 ) {
 
                         ChartIcon IconUp = Chart.DrawIcon("Up" + index, ChartIconType.Circle, index, Bars.OpenPrices[index], ColorUp);
                         IconUp.IsInteractive = false;
@@ -201,7 +201,7 @@ namespace cAlgo
                     ResultDw[index-1] = Result[index-1];
 
 
-                    if (ShowSignal && LastDirection != -1)
+                    if (EnableSignal && LastDirection != -1)
                     {
 
                         ChartIcon IconDw = Chart.DrawIcon("Dw" + index, ChartIconType.Circle, index, Bars.OpenPrices[index], ColorDw);
